@@ -39,7 +39,6 @@ function init() {
           show_results(oca_response_propability);
           show_notifications(oca_response_propability, toast);
 
-
           calculate.addEventListener("transitionend", () => {
             toast.classList.remove("hidden");
             // TODO: Check input variables here
@@ -82,10 +81,10 @@ function calculate_score() {
       const baseline_survival_plus = {
             poise_12m: 0.7026726,
             poise_24m: 0.6179623,
-            alpuln_12m: 0.3938514,
-            alpuln_24m: 0.2930832,
-            nr_12m: 0.9549920,
-            nr_24m: 0.9180344
+            alpuln_12m: 0.3945538,
+            alpuln_24m: 0.2949377,
+            nr_12m: 0.9551407,
+            nr_24m: 0.9183093
       };
 
       const data =  {};
@@ -176,17 +175,16 @@ function calculate_ors_plus(data) {
                         ?
                         ATTAINED
                         :
-                        3.599032
-                        - (0.3174984 * data.pruritus)
-                        - (1.9028261 * (data.alp / data.alp_uln))
-                        + (0.37678444 * Math.pow( Math.max( ((data.alp / data.alp_uln) - 1.5), 0), 3))
-                        - (0.48415824 * Math.pow( Math.max( ((data.alp / data.alp_uln) - 2.05), 0), 3))
-                        + (0.1073738 * Math.pow( Math.max( ((data.alp / data.alp_uln) - 3.98), 0), 3))
-                        - (0.2170505 * data.cirrhosis)
-                        - (0.31490853 * data.total_bilirubin)
-                        + (0.0031310468 * (data.ggt / data.ggt_uln))
-                        - (2.9417792 * (((data.alp_six_month / data.alp_uln_six_month) - (data.alp / data.alp_uln)) / (data.alp / data.alp_uln)))
-                        + (0.15460768 * ((data.total_bilirubin_six_month - data.total_bilirubin) / data.total_bilirubin));
+                        3.6024346
+                        - (0.31340847 * data.pruritus)
+                        - (1.8927908 * (data.alp / data.alp_uln))
+                        + (0.37438631 * Math.pow( Math.max( ((data.alp / data.alp_uln) - 1.5), 0), 3))
+                        - (0.4810767 * Math.pow( Math.max( ((data.alp / data.alp_uln) - 2.05), 0), 3))
+                        + (0.1066904 * Math.pow( Math.max( ((data.alp / data.alp_uln) - 3.98), 0), 3))
+                        - (0.1994449 * data.cirrhosis)
+                        - (0.34343259 * data.total_bilirubin)
+                        + (0.0022129224 * (data.ggt / data.ggt_uln))
+                        - (2.9341961 * (((data.alp_six_month / data.alp_uln_six_month) - (data.alp / data.alp_uln)) / (data.alp / data.alp_uln)));
 
       ors_score.normal_range = (data.alp_six_month / data.alp_uln_six_month) <= 1
                         &&
@@ -194,15 +192,14 @@ function calculate_ors_plus(data) {
                         ?
                         ATTAINED
                         :
-                        5.0951908
-                        - (0.12683862 * data.pruritus)
-                        - (2.6602294 * (data.alp / data.alp_uln))
-                        + (0.65691461 * Math.pow( Math.max( ((data.alp / data.alp_uln) - 1.5), 0), 3))
-                        - (0.84411826 * Math.pow( Math.max( ((data.alp / data.alp_uln) - 2.05), 0), 3))
-                        + (0.18720365 * Math.pow( Math.max( ((data.alp / data.alp_uln) - 3.98), 0), 3))
-                        - (1.3707677 * data.total_bilirubin)
-                        - (5.2589765 * (((data.alp_six_month / data.alp_uln_six_month) - (data.alp / data.alp_uln)) / (data.alp / data.alp_uln)))
-                        + (0.067090469 * ((data.total_bilirubin_six_month - data.total_bilirubin) / data.total_bilirubin));
+                        5.2190166
+                        - (0.13479947 * data.pruritus)
+                        - (2.7592853 * (data.alp / data.alp_uln))
+                        + (0.7405286 * Math.pow( Math.max( ((data.alp / data.alp_uln) - 1.5), 0), 3))
+                        - (0.95156006 * Math.pow( Math.max( ((data.alp / data.alp_uln) - 2.05), 0), 3))
+                        + (0.21103147 * Math.pow( Math.max( ((data.alp / data.alp_uln) - 3.98), 0), 3))
+                        - (1.380134 * data.total_bilirubin)
+                        - (5.1873971 * (((data.alp_six_month / data.alp_uln_six_month) - (data.alp / data.alp_uln)) / (data.alp / data.alp_uln)));
 
       return ors_score;
 }
@@ -210,23 +207,23 @@ function calculate_ors_plus(data) {
 function calculate_oca_response_propability(ors_score, baseline_survival) {
       const oca_response_propability = {};
 
-      oca_response_propability.poise_12m = 1 - Math.pow(baseline_survival.poise_12m, Math.pow(Math.E, ors_score.poise));
-      oca_response_propability.poise_24m = 1 - Math.pow(baseline_survival.poise_24m, Math.pow(Math.E, ors_score.poise));
-      oca_response_propability.alpuln_12m = 1 - Math.pow(baseline_survival.alpuln_12m, Math.pow(Math.E, ors_score.alpuln));
-      oca_response_propability.alpuln_24m = 1 - Math.pow(baseline_survival.alpuln_24m, Math.pow(Math.E, ors_score.alpuln));
-      oca_response_propability.nr_12m = 1 - Math.pow(baseline_survival.nr_12m, Math.pow(Math.E, ors_score.normal_range));
-      oca_response_propability.nr_24m = 1 - Math.pow(baseline_survival.nr_24m, Math.pow(Math.E, ors_score.normal_range));
+      oca_response_propability.poise_12m = ors_score.poise == ATTAINED ? ATTAINED : 1 - Math.pow(baseline_survival.poise_12m, Math.pow(Math.E, ors_score.poise));
+      oca_response_propability.poise_24m = ors_score.poise == ATTAINED ? ATTAINED : 1 - Math.pow(baseline_survival.poise_24m, Math.pow(Math.E, ors_score.poise));
+      oca_response_propability.alpuln_12m = ors_score.alpuln == ATTAINED ? ATTAINED : 1 - Math.pow(baseline_survival.alpuln_12m, Math.pow(Math.E, ors_score.alpuln));
+      oca_response_propability.alpuln_24m = ors_score.alpuln == ATTAINED ? ATTAINED : 1 - Math.pow(baseline_survival.alpuln_24m, Math.pow(Math.E, ors_score.alpuln));
+      oca_response_propability.nr_12m = ors_score.normal_range == ATTAINED ? ATTAINED : 1 - Math.pow(baseline_survival.nr_12m, Math.pow(Math.E, ors_score.normal_range));
+      oca_response_propability.nr_24m = ors_score.normal_range == ATTAINED ? ATTAINED : 1 - Math.pow(baseline_survival.nr_24m, Math.pow(Math.E, ors_score.normal_range));
 
       return oca_response_propability;
 }
 
 function show_results(oca_response_propability) {
-      poise_12m.innerText = oca_response_propability.poise_12m == ATTAINED ? ATTAINED : isNaN(oca_response_propability.poise_12m) ? "--" : oca_response_propability.poise_12m;
-      poise_24m.innerText = oca_response_propability.poise_24m == ATTAINED ? ATTAINED : isNaN(oca_response_propability.poise_24m) ? "--" : oca_response_propability.poise_24m;
-      alp_12m.innerText = oca_response_propability.alpuln_12m == ATTAINED ? ATTAINED : isNaN(oca_response_propability.alpuln_12m) ? "--" : oca_response_propability.alpuln_12m;
-      alp_24m.innerText = oca_response_propability.alpuln_24m == ATTAINED ? ATTAINED : isNaN(oca_response_propability.alpuln_24m) ? "--" : oca_response_propability.alpuln_24m;
-      nr_12m.innerText = oca_response_propability.nr_12m == ATTAINED ? ATTAINED : isNaN(oca_response_propability.nr_12m) ? "--" : oca_response_propability.nr_12m;
-      nr_24m.innerText = oca_response_propability.nr_24m == ATTAINED ? ATTAINED : isNaN(oca_response_propability.nr_24m) ? "--" : oca_response_propability.nr_24m;
+      poise_12m.innerText = oca_response_propability.poise_12m == ATTAINED ? ATTAINED : isNaN(oca_response_propability.poise_12m) ? "--" : Math.round(oca_response_propability.poise_12m * 100) + " %";
+      poise_24m.innerText = oca_response_propability.poise_24m == ATTAINED ? ATTAINED : isNaN(oca_response_propability.poise_24m) ? "--" : Math.round(oca_response_propability.poise_24m * 100) + " %";
+      alp_12m.innerText = oca_response_propability.alpuln_12m == ATTAINED ? ATTAINED : isNaN(oca_response_propability.alpuln_12m) ? "--" : Math.round(oca_response_propability.alpuln_12m * 100) + " %";
+      alp_24m.innerText = oca_response_propability.alpuln_24m == ATTAINED ? ATTAINED : isNaN(oca_response_propability.alpuln_24m) ? "--" : Math.round(oca_response_propability.alpuln_24m * 100) + " %";
+      nr_12m.innerText = oca_response_propability.nr_12m == ATTAINED ? ATTAINED : isNaN(oca_response_propability.nr_12m) ? "--" : Math.round(oca_response_propability.nr_12m * 100) + " %";
+      nr_24m.innerText = oca_response_propability.nr_24m == ATTAINED ? ATTAINED : isNaN(oca_response_propability.nr_24m) ? "--" : Math.round(oca_response_propability.nr_24m * 100) + " %";
 }
 
 function show_notifications(oca_response_propability, toast) {
@@ -240,6 +237,7 @@ function show_notifications(oca_response_propability, toast) {
           toast.innerHTML = svg_ok + toast_message;
           toast.classList.remove("alert-error");
           toast.classList.add("alert-success");
+          document.getElementById("ors_results").scrollIntoView({behavior: 'smooth'});
       }
       else {
           let toast_message = "ORS cannot be calcolated !"
